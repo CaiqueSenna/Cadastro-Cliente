@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Marca -->
+    <color name="primary">#1565C0</color>
+    <color name="primary_dark">#0D47A1</color>
+    <color name="primary_light">#E3F2FD</color>
+    <color name="accent">#00897B</color>
+    <color name="error">#D32F2F</color>
+
+    <!-- Texto -->
+    <color name="text_primary">#1A1A2E</color>
+    <color name="text_secondary">#546E7A</color>
+    <color name="text_hint">#90A4AE</color>
+
+    <!-- UI -->
+    <color name="background">#F5F7FA</color>
+    <color name="white">#FFFFFF</color>
+    <color name="white_70">#B3FFFFFF</color>
+    <color name="divider">#ECEFF1</color>
+
+    <!-- Badge -->
+    <color name="badge_pj">#1565C0</color>
+    <color name="badge_pf">#2E7D32</color>
+
+
+</resources>
