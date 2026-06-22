@@ -2,6 +2,7 @@ package com.caiquesenna.cadastrocliente.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.io.Serializable
 
 @Entity
 data class Cliente(
@@ -21,4 +22,4 @@ data class Cliente(
     val bairro: String,
     val cidade: String,
     val uf: String
-)
+) : Serializable
