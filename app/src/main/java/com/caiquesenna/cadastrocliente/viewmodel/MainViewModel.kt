@@ -30,6 +30,19 @@ class MainViewModel (application: Application) : AndroidViewModel(application) {
         }
     }
 
+    fun filtrarClientes(query: String) {
+        viewModelScope.launch {
+            val lista = withContext(Dispatchers.IO) {
+                if (query.isEmpty()) {
+                    repository.listarClientes()
+                } else {
+                    repository.buscarClientes(query)
+                }
+            }
+            clientes.value = lista
+        }
+    }
+
     //Busca CNPJ na API e salva se nao existir
     fun buscarCnpj(cnpj: String) {
         viewModelScope.launch {

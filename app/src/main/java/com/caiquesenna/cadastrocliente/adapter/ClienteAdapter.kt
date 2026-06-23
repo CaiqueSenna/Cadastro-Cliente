@@ -25,7 +25,10 @@ class ClienteAdapter(
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val tvNome: TextView = view.findViewById(R.id.tvNome)
+        val tvFantasia: TextView = view.findViewById(R.id.tvFantasia)
+        val tvCpfCnpj: TextView = view.findViewById(R.id.tvCpfCnpj)
         val tvCidade: TextView = view.findViewById(R.id.tvCidade)
+        val tvCodigo: TextView = view.findViewById(R.id.tvCodigo)
         val btnEditar: View = view.findViewById(R.id.btnEditar)
         val btnExcluir: View = view.findViewById(R.id.btnExcluir)
     }
@@ -41,6 +44,9 @@ class ClienteAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val cliente = lista[position]
         holder.tvNome.text = cliente.razao
+        holder.tvFantasia.text = cliente.fantasia
+        holder.tvCpfCnpj.text = cliente.cnpj
+        holder.tvCodigo.text = "Codigo: ${cliente.id}"
         holder.tvCidade.text = "${cliente.cidade} - ${cliente.uf}"
 
         holder.btnEditar.setOnClickListener { onEditar(cliente) }

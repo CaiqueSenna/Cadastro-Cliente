@@ -130,15 +130,6 @@
             android:layout_marginTop="10dp">
 
             <TextView
-                android:id="@+id/tvData"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textColor="@color/text_hint"
-                android:textSize="11sp"
-                tools:text="Cadastro: 14/05/2026" />
-
-            <TextView
                 android:id="@+id/tvCodigo"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"

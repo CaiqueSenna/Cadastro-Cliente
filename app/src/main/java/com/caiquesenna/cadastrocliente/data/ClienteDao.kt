@@ -12,8 +12,11 @@ interface ClienteDao {
     @Insert
     suspend fun inserir(cliente: Cliente)
 
-    @Query("SELECT * FROM Cliente")
+    @Query("SELECT * FROM Cliente ORDER BY razao ASC")
     suspend fun listar(): List<Cliente>
+
+    @Query("SELECT * FROM Cliente WHERE razao LIKE :query OR fantasia LIKE :query OR cnpj LIKE :query ORDER BY razao ASC")
+    suspend fun buscar(query: String): List<Cliente>
 
     //Busca um cliente pelo CNPJ (ajuste o nome da coluna se for diferente no seu Model)
     @Query("SELECT * FROM Cliente WHERE cnpj = :cnpj LIMIT 1")

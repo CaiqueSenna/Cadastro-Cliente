@@ -7,6 +7,9 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.caiquesenna.cadastrocliente.R
 import com.caiquesenna.cadastrocliente.adapter.ClienteAdapter
@@ -25,6 +28,12 @@ class MainActivity : AppCompatActivity() {
         enableEdgeToEdge()
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
+        }
 
         val adapter = ClienteAdapter(
             onEditar = { cliente ->
@@ -65,6 +74,18 @@ class MainActivity : AppCompatActivity() {
         viewModel.mensagem.observe(this) {msg ->
             Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
         }
+
+        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                viewModel.filtrarClientes(query ?: "")
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                viewModel.filtrarClientes(newText ?: "")
+                return true
+            }
+        })
 
         binding.butNovo.setOnClickListener {
             val intent = Intent(this, CadastroClienteActivity::class.java)

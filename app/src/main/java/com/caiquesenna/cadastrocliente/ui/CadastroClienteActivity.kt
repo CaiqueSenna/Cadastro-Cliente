@@ -5,6 +5,8 @@ import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import com.caiquesenna.cadastrocliente.databinding.ActivityCadastroClienteBinding
 import com.caiquesenna.cadastrocliente.model.Cliente
 import com.caiquesenna.cadastrocliente.viewmodel.CadastroViewModel
@@ -20,6 +22,12 @@ class CadastroClienteActivity : AppCompatActivity() {
         enableEdgeToEdge()
         binding = ActivityCadastroClienteBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
+        }
 
         // Recupera o cliente se for edição
         cliente = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
