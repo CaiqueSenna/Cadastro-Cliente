@@ -42,3 +42,12 @@ A busca de dados de empresas é realizada através da API pública da [ReceitaWS
 
 ---
 Desenvolvido por **Caique Senna** 🚀
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/83c9b529-e639-4dae-9468-4485bee7a84b" width="300"/>
+  <img src="https://github.com/user-attachments/assets/c995c444-162b-48a5-9715-71800307bc8e" width="300"/>
+  <img src="https://github.com/user-attachments/assets/3a9d57cf-a171-47b4-8be4-ac6afc6f732d" width="300"/>
+</p>
+
+
+
