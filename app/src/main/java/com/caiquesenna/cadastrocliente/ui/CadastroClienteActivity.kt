@@ -7,8 +7,12 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.isVisible
+import com.caiquesenna.cadastrocliente.R
 import com.caiquesenna.cadastrocliente.databinding.ActivityCadastroClienteBinding
 import com.caiquesenna.cadastrocliente.model.Cliente
+import com.caiquesenna.cadastrocliente.utils.aplicarMascaraCep
+import com.caiquesenna.cadastrocliente.utils.aplicarMascaraCpfCnpj
 import com.caiquesenna.cadastrocliente.viewmodel.CadastroViewModel
 
 class CadastroClienteActivity : AppCompatActivity() {
@@ -16,6 +20,8 @@ class CadastroClienteActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCadastroClienteBinding
     private val viewModel: CadastroViewModel by viewModels()
     private var cliente: Cliente? = null
+
+    private var tipoPessoa = "PJ"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,23 +43,29 @@ class CadastroClienteActivity : AppCompatActivity() {
             intent.getSerializableExtra("cliente") as? Cliente
         }
 
-        // Configuração inicial de tipo
+        // Configuração inicial e título
         if (cliente == null) {
-            binding.btnPJ.isSelected = true
-        }
-
-        //Preenche os campos com os dados atuais do cliente
-        cliente?.let {
-            preencherCampos(it)
+            selecionarTipoPessoa("PJ")
+            binding.toolbar.title = "Novo Cliente"
+        } else {
+            binding.toolbar.title = "Editar Cliente"
+            cliente?.let {
+                preencherCampos(it)
+                selecionarTipoPessoa(it.tipo)
+            }
         }
 
         //Observa erros de validacao
         viewModel.erro.observe(this) { msg ->
+            binding.progressCnpj.isVisible = false
+            binding.btnBuscarCnpj.isEnabled = true
             Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
         }
 
         //Observa dados do CNPJ buscado
         viewModel.dadosCnpj.observe(this) { empresa ->
+            binding.progressCnpj.isVisible = false
+            binding.btnBuscarCnpj.isEnabled = true
             empresa?.let {
                 binding.etNomeRazaoSocial.setText(it.nome)
                 binding.etNomeFantasia.setText(it.fantasia)
@@ -81,6 +93,8 @@ class CadastroClienteActivity : AppCompatActivity() {
         binding.btnBuscarCnpj.setOnClickListener {
             val cnpj = binding.etCpfCnpj.text.toString()
             if (cnpj.isNotEmpty()) {
+                binding.progressCnpj.isVisible = true
+                binding.btnBuscarCnpj.isEnabled = false
                 viewModel.buscarCnpj(cnpj)
             } else {
                 Toast.makeText(this, "Digite um CNPJ", Toast.LENGTH_SHORT).show()
@@ -111,17 +125,20 @@ class CadastroClienteActivity : AppCompatActivity() {
             finish()
         }
 
+        binding.toolbar.setNavigationOnClickListener {
+            finish()
+        }
+
         // Lógica para alternar entre PF e PJ
         binding.btnPJ.setOnClickListener {
-            binding.btnPJ.isSelected = true
-            binding.btnPF.isSelected = false
-            // Você pode mudar o background ou cor aqui se quiser visualmente
+            selecionarTipoPessoa("PJ")
         }
 
         binding.btnPF.setOnClickListener {
-            binding.btnPF.isSelected = true
-            binding.btnPJ.isSelected = false
+            selecionarTipoPessoa("PF")
         }
+
+        setupUI()
     }
 
     private fun preencherCampos(it: Cliente) {
@@ -138,5 +155,34 @@ class CadastroClienteActivity : AppCompatActivity() {
         binding.etBairro.setText(it.bairro)
         binding.etCidade.setText(it.cidade)
         binding.etUf.setText(it.uf)
+    }
+
+    //Selecionar Tipo de Pessoa
+    private fun selecionarTipoPessoa(tipo: String) {
+        tipoPessoa = tipo
+        val isPJ = tipo == "PJ"
+
+        binding.btnPJ.isSelected = isPJ
+        binding.btnPF.isSelected = !isPJ
+        binding.btnPJ.setBackgroundResource(if (isPJ) R.drawable.bg_tipo_selected else R.drawable.bg_tipo_unselected)
+        binding.btnPF.setBackgroundResource(if (!isPJ) R.drawable.bg_tipo_selected else R.drawable.bg_tipo_unselected)
+
+        binding.tilNomeFantasia.isVisible = isPJ
+        binding.btnBuscarCnpj.isVisible = isPJ
+
+        binding.tilCpfCnpj.hint = if (isPJ) "CNPJ *" else "CPF *"
+        binding.tilNomeRazaoSocial.hint = if (isPJ) "Razão Social *" else "Nome Completo *"
+        binding.tilIncricaoSocial.hint = if (isPJ) "Inscrição Social *" else "RG *"
+
+        // Limpa campos ao trocar tipo apenas se for uma nova inclusão
+        if (cliente == null) {
+            binding.etCpfCnpj.text?.clear()
+        }
+    }
+
+    //Máscaras
+    private fun setupUI(){
+        binding.etCpfCnpj.aplicarMascaraCpfCnpj()
+        binding.etCep.aplicarMascaraCep()
     }
 }

@@ -27,6 +27,8 @@ class ClienteAdapter(
         val tvNome: TextView = view.findViewById(R.id.tvNome)
         val tvFantasia: TextView = view.findViewById(R.id.tvFantasia)
         val tvCpfCnpj: TextView = view.findViewById(R.id.tvCpfCnpj)
+
+        val tvTipo: TextView = view.findViewById(R.id.tvTipo)
         val tvCidade: TextView = view.findViewById(R.id.tvCidade)
         val tvCodigo: TextView = view.findViewById(R.id.tvCodigo)
         val btnEditar: View = view.findViewById(R.id.btnEditar)
@@ -43,6 +45,7 @@ class ClienteAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val cliente = lista[position]
+        holder.tvTipo.text = cliente.tipo
         holder.tvNome.text = cliente.razao
         holder.tvFantasia.text = cliente.fantasia
         holder.tvCpfCnpj.text = cliente.cnpj
