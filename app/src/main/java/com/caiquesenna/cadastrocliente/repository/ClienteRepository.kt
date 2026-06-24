@@ -18,6 +18,10 @@ class ClienteRepository(context: Context) {
         return dao.listar()
     }
 
+    suspend fun buscarClientes(query: String): List<Cliente> {
+        return dao.buscar("%$query%")
+    }
+
     //Buscar dados do CNPJ na API
     suspend fun buscarCnpj(cnpj: String) = api.buscarCnpj(cnpj)
 
