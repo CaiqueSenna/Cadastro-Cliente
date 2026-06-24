@@ -80,12 +80,18 @@ class CadastroViewModel(application: Application): AndroidViewModel(application)
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 if (id == 0) {
+                    // Verificar se o CNPJ ou CPF já existe para evitar duplicidade
+                    val existente = repository.buscarPorCnpj(cnpj)
+                    if (existente != null) {
+                        erro.postValue("Este CPF/CNPJ já está cadastrado!")
+                        return@withContext
+                    }
                     repository.inserir(novoCliente)
                 } else {
                     repository.atualizar(novoCliente)
                 }
+                atualizado.postValue(true)
             }
-            atualizado.value = true
         }
     }
 }
