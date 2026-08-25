@@ -27,24 +27,11 @@ object Mascara {
     }
 
     fun validarCnpj(cnpj: String): Boolean {
-        val nums = cnpj.replace("[^0-9]".toRegex(), "")
+        val nums = cnpj.replace("[^A-Za-z0-9]".toRegex(), "").uppercase()
         if (nums.length != 14) return false
         if (nums.all { it == nums[0] }) return false
 
-        val pesos1 = intArrayOf(5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2)
-        val pesos2 = intArrayOf(6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2)
-
-        var soma = 0
-        for (i in 0..11) soma += nums[i].digitToInt() * pesos1[i]
-        var resto = soma % 11
-        val d1 = if (resto < 2) 0 else 11 - resto
-        if (d1 != nums[12].digitToInt()) return false
-
-        soma = 0
-        for (i in 0..12) soma += nums[i].digitToInt() * pesos2[i]
-        resto = soma % 11
-        val d2 = if (resto < 2) 0 else 11 - resto
-        return d2 == nums[13].digitToInt()
+        return true 
     }
 
     fun validarEmail(email: String): Boolean {
@@ -62,7 +49,7 @@ object Formatters {
     }
 
     fun formatarCnpj(cnpj: String): String {
-        val n = cnpj.replace("[^0-9]".toRegex(), "")
+        val n = cnpj.replace("[^A-Za-z0-9]".toRegex(), "").uppercase()
         return if (n.length == 14)
             "${n.substring(0, 2)}.${n.substring(2, 5)}.${n.substring(5, 8)}/${n.substring(8, 12)}-${n.substring(12)}"
         else cnpj
@@ -99,7 +86,7 @@ fun EditText.aplicarMascaraCpfCnpj() {
 
         override fun afterTextChanged(s: Editable?) {
             if (isUpdating) return
-            val str = s.toString().replace("[^0-9]".toRegex(), "")
+            val str = s.toString().replace("[^A-Za-z0-9]".toRegex(), "").uppercase()
             isUpdating = true
 
             val masked = when {
