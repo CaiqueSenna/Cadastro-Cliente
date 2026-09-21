@@ -172,7 +172,7 @@ class CadastroClienteActivity : AppCompatActivity() {
 
         binding.tilCpfCnpj.hint = if (isPJ) "CNPJ *" else "CPF *"
         binding.tilNomeRazaoSocial.hint = if (isPJ) "Razão Social *" else "Nome Completo *"
-        binding.tilIncricaoSocial.hint = if (isPJ) "Inscrição Social *" else "RG *"
+        binding.tilIncricaoSocial.hint = if (isPJ) "Inscrição Estadual *" else "RG *"
 
         // Limpa campos ao trocar tipo apenas se for uma nova inclusão
         if (cliente == null) {
